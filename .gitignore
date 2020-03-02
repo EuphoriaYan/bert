@@ -123,3 +123,6 @@ corpus/
 
 # tf-records
 tfrecords/
+
+# output
+output/
