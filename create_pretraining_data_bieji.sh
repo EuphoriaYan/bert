@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-input_file=corpus/corpus/cleaned/bieji.txt
+input_file=corpus/cleaned/bieji.txt
 output_file=tfrecords/bieji.tfrecord1,tfrecords/bieji.tfrecord2,tfrecords/bieji.tfrecord3
 vocab_file=vocab.txt
 
