@@ -181,7 +181,6 @@ def create_training_instances(input_files, tokenizer, max_seq_length,
                               max_predictions_per_seq, rng):
   """Create `TrainingInstance`s from raw text."""
   all_documents = [[]]
-
   # Input file format:
   # (1) One sentence per line. These should ideally be actual sentences, not
   # entire paragraphs or arbitrary spans of text. (Because we use the
