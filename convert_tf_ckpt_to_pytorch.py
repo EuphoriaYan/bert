@@ -8,16 +8,17 @@ import argparse
 
 from layers.bert_basic_model import *
 
+
 # Load tf checkpoints in a pytorch model.
 def load_tf_weights_in_bert(model, tf_checkpoint_path):
     tf_path = os.path.abspath(tf_checkpoint_path)
-    logger.info("Converting TensorFlow checkpoint from {}".format(tf_path))
+    print("Converting TensorFlow checkpoint from {}".format(tf_path))
     # Load weights from TF model
     init_vars = tf.train.list_variables(tf_path)
     names = []
     arrays = []
     for name, shape in init_vars:
-        logger.info("Loading TF weight {} with shape {}".format(name, shape))
+        # print("Loading TF weight {} with shape {}".format(name, shape))
         array = tf.train.load_variable(tf_path, name)
         names.append(name)
         arrays.append(array)
@@ -26,9 +27,13 @@ def load_tf_weights_in_bert(model, tf_checkpoint_path):
         name = name.split('/')
         # adam_v and adam_m are variables used in AdamWeightDecayOptimizer to calculated m and v
         # which are not required for using pretrained model
+        # cls is variables for mask-prediction
+        # which is not required for using pretrained model
         if any(n in ["adam_v", "adam_m", "global_step", "cls"] for n in name):
-            logger.info("Skipping {}".format("/".join(name)))
+            print("Skipping {}".format("/".join(name)))
             continue
+        if name[0] == 'bert':
+            name = name[1:]
         pointer = model
         for m_name in name:
             if re.fullmatch(r'[A-Za-z]+_\d+', m_name):
@@ -61,17 +66,18 @@ def load_tf_weights_in_bert(model, tf_checkpoint_path):
         except AssertionError as e:
             e.args += (pointer.shape, array.shape)
             raise
-        logger.info("Initialize PyTorch weight {}".format(name))
+        print("Initialize PyTorch weight {}".format(name))
         pointer.data = torch.from_numpy(array)
     return model
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Converts tf bert ckpt weights to pytorch bin")
-    parser.add_argument("infile", type=str, help="Path to the ckpt.")
-    parser.add_argument("outfile", type=str, help="Path to the pytorch dump.")
+    parser.add_argument("--infile", type=str, help="Path to the ckpt.", required=True)
+    parser.add_argument("--outfile", type=str, help="Path to the pytorch dump.", required=True)
+    parser.add_argument("--configs", type=str, help="Bert configs", required=True)
     args = parser.parse_args()
-    bert_config = BertConfig.from_json_file("chinese_L-12_H-768_A-12/bert_config.json")
+    bert_config = BertConfig.from_json_file(args.configs)
     model = BertModel(bert_config)
     load_tf_weights_in_bert(model, args.infile)
     torch.save(model.state_dict(), args.outfile)
