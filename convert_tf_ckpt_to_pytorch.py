@@ -52,7 +52,7 @@ def load_tf_weights_in_bert(model, tf_checkpoint_path):
                 try:
                     pointer = getattr(pointer, l[0])
                 except AttributeError:
-                    logger.info("Skipping {}".format("/".join(name)))
+                    print("Skipping {}".format("/".join(name)))
                     continue
             if len(l) >= 2:
                 num = int(l[1])
