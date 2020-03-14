@@ -5,7 +5,7 @@ export CUDA_VISIBLE_DEVICES=2
 config_path=configs/bert.json
 input_file='tfrecords/*.*'
 output_dir=model_output
-init_checkpoint=model_output/model.ckpt-400000
+init_checkpoint=model_output/model.ckpt-600000
 
 python run_pretraining.py \
 --bert_config_file ${config_path} \
