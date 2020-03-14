@@ -13,7 +13,7 @@ python run_pretraining.py \
 --output_dir ${output_dir} \
 --do_train True \
 --do_eval True \
---num_train_steps 600000 \
+--num_train_steps 1000000 \
 --num_warmup_steps 0 \
 --save_checkpoints_steps 100000 \
 --init_checkpoint ${init_checkpoint}
