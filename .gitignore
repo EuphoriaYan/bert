@@ -126,3 +126,6 @@ tfrecords/
 
 # output
 output/
+
+# model_output
+model_output/
