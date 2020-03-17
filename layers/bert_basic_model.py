@@ -56,6 +56,7 @@ def swish(x):
     return x * torch.sigmoid(x)
 
 
+# ACT2FN = {"gelu": torch.nn.functional.gelu, "relu": torch.nn.functional.relu, "swish": swish}
 ACT2FN = {"gelu": gelu, "relu": torch.nn.functional.relu, "swish": swish}
 
 

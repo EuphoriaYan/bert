@@ -81,3 +81,4 @@ if __name__ == '__main__':
     model = BertModel(bert_config)
     load_tf_weights_in_bert(model, args.infile)
     torch.save(model.state_dict(), args.outfile)
+    print("Convert success.")
